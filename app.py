@@ -4,12 +4,12 @@ app = Flask(__name__)
 
 # Temporary in-memory database
 students = [
-    {"id": 1, "name": "Emily Pajarpa", "grade": 10, "section": "Stallman"},
-    {"id": 2, "name": "John Doe", "grade": 9, "section": "Torvalds"},
+    {"id": 1, "name": "Alexa Villanueva", "grade": 10, "section": "Galileo"},
+    {"id": 2, "name": "Marcus Delos Reyes", "grade": 9, "section": "Curie"},
 ]
 
 # -----------------------
-# HTML FRONTEND
+# HTML FRONTEND — Custom Purple Themed Design by Jan Laurence Galon
 # -----------------------
 html_page = """
 <!DOCTYPE html>
@@ -19,44 +19,47 @@ html_page = """
     <title>Student Information Management System</title>
 
     <meta property="og:title" content="Student Information Management System">
-    <meta property="og:url" content="https://emily-pajarpa.onrender.com">
+    <meta property="og:url" content="https://jan-laurence.onrender.com">
     
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e0ecff, #f5f9ff);
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e6d9ff, #f6f0ff);
             margin: 0;
             padding: 0;
-            color: #333;
+            color: #2d2d2d;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         header {
-            background: linear-gradient(135deg, #004aad, #0073ff);
+            background: linear-gradient(135deg, #6a0dad, #9b30ff);
             color: white;
             padding: 25px 0;
             text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(106, 13, 173, 0.4);
         }
-        h1 { margin: 0; font-size: 2em; }
+        h1 { margin: 0; font-size: 2.2em; letter-spacing: 1px; }
+
         .container {
             width: 90%;
             max-width: 950px;
             margin: 30px auto;
             background: white;
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(155, 48, 255, 0.15);
             flex-grow: 1;
         }
+
         .form-section {
-            background: #f8faff;
-            border: 1px solid #dde7ff;
-            border-radius: 10px;
-            padding: 15px;
+            background: #f9f5ff;
+            border: 1px solid #e3d0ff;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 25px;
         }
+
         input {
             padding: 10px;
             margin: 8px 5px;
@@ -64,64 +67,90 @@ html_page = """
             border-radius: 6px;
             width: 200px;
             font-size: 14px;
+            transition: border-color 0.2s ease;
         }
+
+        input:focus {
+            border-color: #9b30ff;
+            outline: none;
+        }
+
         .btn {
-            padding: 10px 15px;
+            padding: 10px 18px;
             border: none;
             border-radius: 6px;
             font-size: 14px;
             cursor: pointer;
-            background-color: #004aad;
+            background-color: #6a0dad;
             color: white;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 3px 10px rgba(106, 13, 173, 0.3);
         }
-        .btn:hover { background-color: #003580; transform: scale(1.05); }
+        .btn:hover {
+            background-color: #8120e0;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(129, 32, 224, 0.5);
+        }
+
         .search-bar { margin: 20px 0; }
         .search-bar input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            border: 1px solid #d1b3ff;
+            border-radius: 8px;
             font-size: 14px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
             margin-top: 10px;
             table-layout: fixed;
         }
+
         th, td {
             text-align: left;
             padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #e2ccff;
             word-wrap: break-word;
         }
+
         th {
-            background-color: #004aad;
+            background-color: #6a0dad;
             color: white;
             text-transform: uppercase;
         }
+
+        tr:hover {
+            background-color: #f3e8ff;
+        }
+
+        /* Column width adjustments */
         th:nth-child(1), td:nth-child(1) { width: 10%; text-align: center; }
         th:nth-child(2), td:nth-child(2) { width: 30%; }
         th:nth-child(3), td:nth-child(3) { width: 15%; text-align: center; }
         th:nth-child(4), td:nth-child(4) { width: 20%; text-align: center; }
         th:nth-child(5), td:nth-child(5) { width: 25%; text-align: center; }
-        tr:hover { background-color: #f1f4ff; }
+
         footer {
             text-align: center;
             padding: 15px;
             margin-top: auto;
-            background: #004aad;
+            background: linear-gradient(135deg, #6a0dad, #9b30ff);
             color: white;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
+
         .button-group { display: inline-flex; gap: 8px; }
         .action-buttons {
             display: flex;
             justify-content: center;
             gap: 10px;
         }
+
         @media (max-width: 600px) {
             input { width: 100%; }
             table, th, td { font-size: 13px; }
@@ -135,9 +164,8 @@ html_page = """
     </header>
 
     <div class="container">
-
         <div class="form-section">
-            <h3>Add / Edit Student</h3>
+            <h3>📘 Add / Edit Student</h3>
             <input type="hidden" id="studentId">
             <input type="text" id="name" placeholder="Student Name">
             <input type="number" id="grade" placeholder="Grade Level">
@@ -160,11 +188,10 @@ html_page = """
             </thead>
             <tbody id="studentTable"></tbody>
         </table>
-
     </div>
 
     <footer>
-        &copy; 2025 Student Management System | Designed by Emily Pajarpa
+        &copy; 2025 Student Management System | Designed & Developed by <b>Jan Laurence Galon 💜</b>
     </footer>
 
     <script>
